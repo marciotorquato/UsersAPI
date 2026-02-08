@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UsersAPI.Data\UsersAPI.Data.csproj" />
+    <ProjectReference Include="..\UsersAPI.IoC\UsersAPI.IoC.csproj" />
   </ItemGroup>
 
 </Project>
