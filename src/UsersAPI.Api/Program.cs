@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UsersAPI.Api.Middleware;
 using UsersAPI.Data;
 using UsersAPI.IoC;
 
@@ -20,12 +21,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerDocumentation();
 }
 
+app.UseMiddleware<LoggingMiddleware>();
 app.UseSerilogRequestLoggingConfiguration();
-
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
+
 
 app.Run();
