@@ -62,7 +62,7 @@ namespace UsersAPI.IoC
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "FIAPCloudGames API v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserAPI API v1");
             });
             return app;
         }

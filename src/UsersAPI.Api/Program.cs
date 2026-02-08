@@ -4,8 +4,10 @@ using UsersAPI.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddJwtAuthenticationConfig(builder.Configuration);
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddControllers();
+builder.AddSerilogConfiguration();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<UsersApiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UsersApiConnection")));
@@ -18,10 +20,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerDocumentation();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.UseSerilogRequestLoggingConfiguration();
 
 app.UseHttpsRedirection();
 
