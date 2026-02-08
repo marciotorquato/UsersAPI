@@ -10,7 +10,12 @@ namespace UsersAPI.IoC
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection services)
         {
+            services.AddScoped<IContatoService, ContatoService>();
+            services.AddScoped<IEnderecoService, EnderecoService>();
+            services.AddScoped<IRoleServices, RoleServices>();
             services.AddScoped<IUsuarioService, UsuarioServices>();
+            services.AddScoped<IUsuarioPerfilService, UsuarioPerfilServices>();
+            services.AddScoped<IUsuarioRoleServices, UsuarioRoleServices>();
             return services;
         }
     }

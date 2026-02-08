@@ -10,7 +10,12 @@ namespace UsersAPI.IoC
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IContatoAppService, ContatoAppService>();
+            services.AddScoped<IEnderecoAppService, EnderecoAppService>();
+            services.AddScoped<IRoleAppService, RoleAppService>();
             services.AddScoped<IUsuarioAppService, UsuarioAppService>();
+            services.AddScoped<IUsuarioPerfilAppService, UsuarioPerfilAppService>();
+            services.AddScoped<IUsuarioRoleAppService, UsuarioRoleAppService>();
             return services;
         }
     }
