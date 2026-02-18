@@ -35,5 +35,11 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 app.MapAuthentication();
+app.MapContatos();
+app.MapEnderecos();
+app.MapRoles();
+app.MapUsuarioPerfil();
+app.MapUsuarioRole();
+app.MapUsuarios();
 
 app.Run();
