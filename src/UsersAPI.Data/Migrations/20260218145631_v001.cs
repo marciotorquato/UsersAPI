@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace UsersAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class v001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,8 +18,8 @@ namespace UsersAPI.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    RoleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,9 +32,9 @@ namespace UsersAPI.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Senha = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ativo = table.Column<bool>(type: "bit", nullable: false),
-                    DataCriacao = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    DataCriacao = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DataAtualizacao = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
@@ -46,8 +48,8 @@ namespace UsersAPI.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Celular = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(320)", maxLength: 320, nullable: true)
+                    Celular = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,13 +68,13 @@ namespace UsersAPI.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Rua = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    Numero = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Complemento = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Bairro = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Cidade = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Estado = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Cep = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    Rua = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Numero = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Complemento = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bairro = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cep = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,10 +93,10 @@ namespace UsersAPI.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NomeCompleto = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    DataNascimento = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    Pais = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    AvatarUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                    NomeCompleto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DataNascimento = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Pais = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -129,7 +131,16 @@ namespace UsersAPI.Data.Migrations
                         column: x => x.UsuarioId,
                         principalTable: "Usuario",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Role",
+                columns: new[] { "Id", "Description", "RoleName" },
+                values: new object[,]
+                {
+                    { 1, "Usuário padrão do sistema", "usuario" },
+                    { 2, "Administrador com acesso total", "administrador" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -143,9 +154,10 @@ namespace UsersAPI.Data.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuario_Nome",
+                name: "IX_Usuario_Nome_Unique",
                 table: "Usuario",
-                column: "Nome");
+                column: "Nome",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsuarioPerfil_UsuarioId",
@@ -159,9 +171,10 @@ namespace UsersAPI.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsuarioRole_UsuarioId",
+                name: "IX_UsuarioRole_UsuarioId_RoleId",
                 table: "UsuarioRole",
-                column: "UsuarioId");
+                columns: new[] { "UsuarioId", "RoleId" },
+                unique: true);
         }
 
         /// <inheritdoc />

@@ -12,8 +12,8 @@ using UsersAPI.Data;
 namespace UsersAPI.Data.Migrations
 {
     [DbContext(typeof(UsersApiDbContext))]
-    [Migration("20260218140014_Inicial")]
-    partial class Inicial
+    [Migration("20260218145631_v001")]
+    partial class v001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,20 +32,19 @@ namespace UsersAPI.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Celular")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(320)
-                        .HasColumnType("nvarchar(320)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId")
-                        .HasDatabaseName("IX_Contato_UsuarioId");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Contato", (string)null);
                 });
@@ -57,40 +56,38 @@ namespace UsersAPI.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Bairro")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cep")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cidade")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Complemento")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Estado")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Numero")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rua")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId")
-                        .HasDatabaseName("IX_Endereco_UsuarioId");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Endereco", (string)null);
                 });
@@ -101,23 +98,34 @@ namespace UsersAPI.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Usuário padrão do sistema",
+                            RoleName = "usuario"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Administrador com acesso total",
+                            RoleName = "administrador"
+                        });
                 });
 
             modelBuilder.Entity("UsersApi.Domain.Entities.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Ativo")
@@ -126,7 +134,7 @@ namespace UsersAPI.Data.Migrations
                     b.Property<DateTimeOffset?>("DataAtualizacao")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTimeOffset>("DataCriacao")
+                    b.Property<DateTimeOffset?>("DataCriacao")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Nome")
@@ -136,13 +144,13 @@ namespace UsersAPI.Data.Migrations
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Nome")
-                        .HasDatabaseName("IX_Usuario_Nome");
+                        .IsUnique()
+                        .HasDatabaseName("IX_Usuario_Nome_Unique");
 
                     b.ToTable("Usuario", (string)null);
                 });
@@ -150,23 +158,19 @@ namespace UsersAPI.Data.Migrations
             modelBuilder.Entity("UsersApi.Domain.Entities.UsuarioPerfil", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AvatarUrl")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DataNascimento")
+                    b.Property<DateTimeOffset>("DataNascimento")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NomeCompleto")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pais")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
@@ -174,8 +178,7 @@ namespace UsersAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_UsuarioPerfil_UsuarioId");
+                        .IsUnique();
 
                     b.ToTable("UsuarioPerfil", (string)null);
                 });
@@ -183,7 +186,6 @@ namespace UsersAPI.Data.Migrations
             modelBuilder.Entity("UsersApi.Domain.Entities.UsuarioRole", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RoleId")
@@ -194,11 +196,10 @@ namespace UsersAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("IX_UsuarioRole_RoleId");
+                    b.HasIndex("RoleId");
 
-                    b.HasIndex("UsuarioId")
-                        .HasDatabaseName("IX_UsuarioRole_UsuarioId");
+                    b.HasIndex("UsuarioId", "RoleId")
+                        .IsUnique();
 
                     b.ToTable("UsuarioRole", (string)null);
                 });
@@ -239,7 +240,7 @@ namespace UsersAPI.Data.Migrations
             modelBuilder.Entity("UsersApi.Domain.Entities.UsuarioRole", b =>
                 {
                     b.HasOne("UsersApi.Domain.Entities.Role", "Role")
-                        .WithMany("UsuarioRoles")
+                        .WithMany("Usuarios")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -247,7 +248,7 @@ namespace UsersAPI.Data.Migrations
                     b.HasOne("UsersApi.Domain.Entities.Usuario", "Usuario")
                         .WithMany("UsuarioRoles")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Role");
@@ -257,7 +258,7 @@ namespace UsersAPI.Data.Migrations
 
             modelBuilder.Entity("UsersApi.Domain.Entities.Role", b =>
                 {
-                    b.Navigation("UsuarioRoles");
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("UsersApi.Domain.Entities.Usuario", b =>
@@ -266,7 +267,8 @@ namespace UsersAPI.Data.Migrations
 
                     b.Navigation("Enderecos");
 
-                    b.Navigation("Perfil");
+                    b.Navigation("Perfil")
+                        .IsRequired();
 
                     b.Navigation("UsuarioRoles");
                 });

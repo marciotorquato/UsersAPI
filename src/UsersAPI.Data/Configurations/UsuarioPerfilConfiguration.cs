@@ -2,28 +2,41 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UsersApi.Domain.Entities;
 
-namespace UsersAPI.Data.Configurations
+namespace UsersAPI.Data.Configurations;
+
+public class UsuarioPerfilConfiguration : IEntityTypeConfiguration<UsuarioPerfil>
 {
-    public class UsuarioPerfilConfiguration : IEntityTypeConfiguration<UsuarioPerfil>
+    public void Configure(EntityTypeBuilder<UsuarioPerfil> builder)
     {
-        public void Configure(EntityTypeBuilder<UsuarioPerfil> builder)
-        {
-            builder.ToTable("UsuarioPerfil");
+        builder.ToTable("UsuarioPerfil");
+        builder.HasKey(primaryKey => primaryKey.Id);
 
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id).HasColumnType("uniqueidentifier");
+        builder.Property(up => up.Id)
+             .ValueGeneratedNever();
 
-            builder.Property(p => p.UsuarioId).HasColumnType("uniqueidentifier").IsRequired();
+        builder.Property(up => up.NomeCompleto)
+               .IsRequired(false)
+               .HasColumnType("nvarchar(max)");
 
-            builder.Property(p => p.NomeCompleto)
-                .HasMaxLength(300)
-                .HasColumnType("nvarchar(300)");
+        builder.Property(up => up.DataNascimento)
+               .IsRequired();
 
-            builder.Property(p => p.DataNascimento).HasColumnType("datetimeoffset");
-            builder.Property(p => p.Pais).HasMaxLength(100).HasColumnType("nvarchar(100)");
-            builder.Property(p => p.AvatarUrl).HasMaxLength(1000).HasColumnType("nvarchar(1000)");
+        builder.Property(up => up.Pais)
+               .IsRequired(false)
+               .HasColumnType("nvarchar(max)");
 
-            builder.HasIndex(p => p.UsuarioId).HasDatabaseName("IX_UsuarioPerfil_UsuarioId");
-        }
+        builder.Property(up => up.AvatarUrl)
+               .IsRequired(false)
+               .HasColumnType("nvarchar(max)");
+
+        builder.Property(c => c.UsuarioId)
+               .IsRequired();
+
+        builder.HasOne(up => up.Usuario)
+               .WithOne(u => u.Perfil)
+               .HasForeignKey<UsuarioPerfil>(c => new { c.UsuarioId })
+               .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(c => new { c.UsuarioId }).IsUnique();
     }
 }

@@ -19,8 +19,7 @@ namespace UsersAPI.Authentication
 
         public string GenerateToken(Usuario usuario)
         {
-            var roles = usuario.UsuarioRoles?.Select(ur => ur.Role.RoleName).ToList()
-                        ?? [];
+            var roles = usuario.UsuarioRoles?.Select(ur => ur.Role.RoleName).ToList() ?? [];
 
             if (!roles.Any())
             {

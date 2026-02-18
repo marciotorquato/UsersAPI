@@ -12,7 +12,7 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddControllers();
 builder.AddSerilogConfiguration();
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<UsersApiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MS_UserAPI")));
+builder.Services.AddDbContext<UsersApiDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("MS_UserAPI")));
 builder.Services.AddApplicationServices();
 builder.Services.AddDomainServices();
 builder.Services.AddRepositories();

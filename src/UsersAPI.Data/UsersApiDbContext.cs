@@ -27,6 +27,21 @@ namespace UsersAPI.Data
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UsuarioRoleConfiguration());
 
+            modelBuilder.Entity<Role>().HasData(
+            new Role
+            {
+                Id = 1,
+                RoleName = "usuario",
+                Description = "Usuário padrão do sistema"
+            },
+            new Role
+            {
+                Id = 2,
+                RoleName = "administrador",
+                Description = "Administrador com acesso total"
+            }
+        );
+
             base.OnModelCreating(modelBuilder);
         }
     }
