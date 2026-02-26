@@ -23,6 +23,7 @@
     <ProjectReference Include="..\UsersAPI.Authentication\UsersAPI.Authentication.csproj" />
     <ProjectReference Include="..\UsersAPI.Data\UsersAPI.Data.csproj" />
     <ProjectReference Include="..\UsersAPI.Domain\UsersAPI.Domain.csproj" />
+    <ProjectReference Include="..\UsersAPI.Messaging\UsersAPI.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

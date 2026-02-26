@@ -2,7 +2,9 @@
 using UsersAPI.Application.Interfaces;
 using UsersAPI.Domain.Dtos.Request.Usuario;
 using UsersAPI.Domain.Dtos.Responses.Usuario;
+using UsersAPI.Domain.Events;
 using UsersAPI.Domain.Exceptions;
+using UsersAPI.Domain.Interfaces.Events;
 using UsersAPI.Domain.Interfaces.Services;
 
 namespace UsersAPI.Application.AppServices
@@ -10,25 +12,51 @@ namespace UsersAPI.Application.AppServices
     public class UsuarioAppService : IUsuarioAppService
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly IEventPublisher _eventPublisher;
         private readonly ILogger<UsuarioAppService> _logger;
 
         public UsuarioAppService(
-            IUsuarioService usuarioService,
-            ILogger<UsuarioAppService> logger)
+        IUsuarioService usuarioService,
+        IEventPublisher eventPublisher,
+        ILogger<UsuarioAppService> logger)
         {
-            _usuarioService = usuarioService ?? throw new ArgumentNullException(nameof(usuarioService));
+            _usuarioService = usuarioService;
+            _eventPublisher = eventPublisher;
             _logger = logger;
         }
 
         public async Task<CadastrarUsuarioResponse> Cadastrar(CadastrarUsuarioRequest request)
         {
             var cadastroUsuarioResult = await _usuarioService.CadastrarUsuario(request);
+
             if (cadastroUsuarioResult == null)
             {
                 _logger.LogError("Falha ao cadastrar usuário no serviço de domínio | Email: {Email}", request.Email);
                 throw new DomainException("Não foi possível cadastrar o usuário. Verifique os dados fornecidos.");
             }
-            return new CadastrarUsuarioResponse() { IdUsuario = cadastroUsuarioResult.Id };
+
+            try
+            {
+                var userCreatedEvent = new UserCreatedEvent
+                {
+                    UsuarioId = cadastroUsuarioResult.Id
+                };
+
+                await _eventPublisher.PublishUserCreatedAsync(userCreatedEvent);
+
+                _logger.LogInformation(
+                    "Evento UserCreated publicado | UsuarioId: {UsuarioId}",
+                    cadastroUsuarioResult.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao publicar UserCreated, mas usuário foi cadastrado | UsuarioId: {UsuarioId}", cadastroUsuarioResult.Id);
+            }
+
+            return new CadastrarUsuarioResponse
+            {
+                IdUsuario = cadastroUsuarioResult.Id
+            };
         }
 
         public BuscarPorIdResponse BuscarPorId(Guid id)

@@ -4,6 +4,7 @@ using UsersAPI.Api.Endpoints;
 using UsersAPI.Api.Middleware;
 using UsersAPI.Data;
 using UsersAPI.IoC;
+using UsersAPI.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,11 +20,27 @@ builder.Services.AddRepositories();
 builder.Services.AddAuthenticationDependencies(builder.Configuration);
 builder.Host.UseSerilog();
 
+// Registrar RabbitMQ
+builder.Services.AddRabbitMQMessaging(builder.Configuration);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerDocumentation();
+}
+
+// Inicializar RabbitMQ
+try
+{
+    using var scope = app.Services.CreateScope();
+    var initializer = scope.ServiceProvider.GetRequiredService<RabbitMQInitializer>();
+    await initializer.InitializeAsync();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Erro ao inicializar RabbitMQ");
+    throw;
 }
 
 app.UseMiddleware<LoggingMiddleware>();
