@@ -1,9 +1,8 @@
-﻿namespace UsersAPI.Domain.Dtos.Request.Role
+﻿namespace UsersAPI.Domain.Dtos.Request.Role;
+
+public class CadastrarRoleRequest
 {
-    public class CadastrarRoleRequest
-    {
-        public int Id { get; set; }
-        public string RoleName { get; set; }
-        public string Description { get; set; }
-    }
+    public int Id { get; set; }
+    public string RoleName { get; set; }
+    public string Description { get; set; }
 }

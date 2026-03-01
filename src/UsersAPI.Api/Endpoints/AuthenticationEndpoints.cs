@@ -4,30 +4,29 @@ using UsersAPI.Application.Interfaces;
 using UsersAPI.Domain.Dtos.Request.Authentication;
 using UsersAPI.Domain.Dtos.Responses.Authentication;
 
-namespace UsersAPI.Api.Endpoints
+namespace UsersAPI.Api.Endpoints;
+
+public static class AuthenticationEndpoints
 {
-    public static class AuthenticationEndpoints
+    public static void MapAuthentication(this IEndpointRouteBuilder route)
     {
-        public static void MapAuthentication(this IEndpointRouteBuilder route)
+        var app = route.MapGroup("/api/Authentication").WithTags("Authentication");
+
+        app.MapPost("login/", async (LoginRequest request, IAuthenticationAppService authenticationService) =>
         {
-            var app = route.MapGroup("/api/Authentication").WithTags("Authentication");
+            var loginResponse = await authenticationService.Login(request.Usuario, request.Senha);
 
-            app.MapPost("login/", async (LoginRequest request, IAuthenticationAppService authenticationService) =>
+            if (loginResponse == null || string.IsNullOrEmpty(loginResponse.Token))
             {
-                var loginResponse = await authenticationService.Login(request.Usuario, request.Senha);
+                return ApiResponses.Unauthorized("Usuário ou senha inválidos.");
+            }
 
-                if (loginResponse == null || string.IsNullOrEmpty(loginResponse.Token))
-                {
-                    return ApiResponses.Unauthorized("Usuário ou senha inválidos.");
-                }
-
-                return ApiResponses.Ok(loginResponse, "Login realizado com sucesso.");
-            })
-            .AddEndpointFilter<ValidationEndpointFilter<LoginRequest>>()
-            .WithName("Login")
-            .Produces<LoginResponse>(200)
-            .Produces(400)
-            .Produces(401);
-        }
+            return ApiResponses.Ok(loginResponse, "Login realizado com sucesso.");
+        })
+        .AddEndpointFilter<ValidationEndpointFilter<LoginRequest>>()
+        .WithName("Login")
+        .Produces<LoginResponse>(200)
+        .Produces(400)
+        .Produces(401);
     }
 }

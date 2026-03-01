@@ -31,7 +31,7 @@ public class RabbitMQInitializer
             await using var connection = await factory.CreateConnectionAsync();
             await using var channel = await connection.CreateChannelAsync();
 
-            // ===== CONFIGURAÇÃO PARA PUBLICAR (UserCreated) =====
+            // CONFIGURAÇÃO PARA PUBLICAR (UserCreated)
             var userCreatedExchange = _configuration["RabbitMQ:Exchanges:UserCreated"] ?? "user-created-exchange";
 
             await channel.ExchangeDeclareAsync(

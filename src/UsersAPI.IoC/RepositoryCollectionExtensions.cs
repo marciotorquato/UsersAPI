@@ -5,18 +5,17 @@ using UsersAPI.Data.Repositories.Generic;
 using UsersAPI.Domain.Interfaces.Generic;
 using UsersAPI.Domain.Interfaces.Repository;
 
-namespace UsersAPI.IoC
+namespace UsersAPI.IoC;
+
+[ExcludeFromCodeCoverage]
+public static class RepositoryCollectionExtensions
 {
-    [ExcludeFromCodeCoverage]
-    public static class RepositoryCollectionExtensions
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
-        {
-            services.AddScoped(typeof(IGenericEntityRepository<>), typeof(GenericEntityRepository<>));
-            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
-            services.AddScoped<IContatoRepository, ContatoRepository>();
-            services.AddScoped<IUsuarioPerfilRepository, UsuarioPerfilRepository>();
-            return services;
-        }
+        services.AddScoped(typeof(IGenericEntityRepository<>), typeof(GenericEntityRepository<>));
+        services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+        services.AddScoped<IContatoRepository, ContatoRepository>();
+        services.AddScoped<IUsuarioPerfilRepository, UsuarioPerfilRepository>();
+        return services;
     }
 }

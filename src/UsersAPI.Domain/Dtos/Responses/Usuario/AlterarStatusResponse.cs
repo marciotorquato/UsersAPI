@@ -1,4 +1,3 @@
-﻿namespace UsersAPI.Domain.Dtos.Responses.Usuario
-{
-    public record AlterarStatusResponse(string StatusAtual);
-}
+﻿namespace UsersAPI.Domain.Dtos.Responses.Usuario;
+
+public record AlterarStatusResponse(string StatusAtual);

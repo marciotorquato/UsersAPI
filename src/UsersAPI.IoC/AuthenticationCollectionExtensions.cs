@@ -5,15 +5,14 @@ using UsersAPI.Application.AppServices;
 using UsersAPI.Application.Interfaces;
 using UsersAPI.Authentication;
 
-namespace UsersAPI.IoC
+namespace UsersAPI.IoC;
+
+[ExcludeFromCodeCoverage]
+public static class AuthenticationCollectionExtensions
 {
-    [ExcludeFromCodeCoverage]
-    public static class AuthenticationCollectionExtensions
+    public static void AddAuthenticationDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddAuthenticationDependencies(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
-            services.AddScoped<IJwtGenerator, JwtGenerator>();
-        }
+        services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+        services.AddScoped<IJwtGenerator, JwtGenerator>();
     }
 }

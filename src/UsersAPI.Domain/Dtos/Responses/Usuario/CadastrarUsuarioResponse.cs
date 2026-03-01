@@ -1,7 +1,6 @@
-﻿namespace UsersAPI.Domain.Dtos.Responses.Usuario
+﻿namespace UsersAPI.Domain.Dtos.Responses.Usuario;
+
+public class CadastrarUsuarioResponse
 {
-    public class CadastrarUsuarioResponse
-    {
-        public Guid IdUsuario { get; set; }
-    }
+    public Guid IdUsuario { get; set; }
 }

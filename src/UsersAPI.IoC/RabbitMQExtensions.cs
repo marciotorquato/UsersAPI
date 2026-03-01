@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using UsersAPI.Domain.Interfaces.Events;
 using UsersAPI.Messaging;
 
 namespace UsersAPI.IoC;
 
+[ExcludeFromCodeCoverage]
 public static class RabbitMQExtensions
 {
     public static IServiceCollection AddRabbitMQMessaging(

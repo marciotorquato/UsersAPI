@@ -1,9 +1,8 @@
 ﻿using UsersApi.Domain.Entities;
 
-namespace UsersAPI.Application.Interfaces
+namespace UsersAPI.Application.Interfaces;
+
+public interface IJwtGenerator
 {
-    public interface IJwtGenerator
-    {
-        string GenerateToken(Usuario usuario);
-    }
+    string GenerateToken(Usuario usuario);
 }

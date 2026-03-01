@@ -1,8 +1,7 @@
-﻿namespace UsersAPI.Domain.Enums
+﻿namespace UsersAPI.Domain.Enums;
+
+public enum TipoUsuario
 {
-    public enum TipoUsuario
-    {
-        Usuario = 1,
-        Administrador = 2
-    }
+    Usuario = 1,
+    Administrador = 2
 }

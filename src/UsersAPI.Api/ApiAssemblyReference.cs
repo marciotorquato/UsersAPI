@@ -1,6 +1,5 @@
-﻿namespace UsersAPI.Api
+﻿namespace UsersAPI.Api;
+
+public class ApiAssemblyReference
 {
-    public class ApiAssemblyReference
-    {
-    }
 }

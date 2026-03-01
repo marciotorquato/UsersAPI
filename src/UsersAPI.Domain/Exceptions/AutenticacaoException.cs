@@ -1,7 +1,6 @@
-﻿namespace UsersAPI.Domain.Exceptions
+﻿namespace UsersAPI.Domain.Exceptions;
+
+public class AutenticacaoException : Exception
 {
-    public class AutenticacaoException : Exception
-    {
-        public AutenticacaoException(string message) : base(message) { }
-    }
+    public AutenticacaoException(string message) : base(message) { }
 }

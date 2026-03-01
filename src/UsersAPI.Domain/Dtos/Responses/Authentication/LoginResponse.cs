@@ -1,4 +1,3 @@
-﻿namespace UsersAPI.Domain.Dtos.Responses.Authentication
-{
-    public record LoginResponse(string Token);
-}
+﻿namespace UsersAPI.Domain.Dtos.Responses.Authentication;
+
+public record LoginResponse(string Token);

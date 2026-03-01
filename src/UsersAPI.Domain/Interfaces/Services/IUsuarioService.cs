@@ -3,16 +3,15 @@ using UsersAPI.Domain.Dtos.Request.Usuario;
 using UsersAPI.Domain.Dtos.Responses.Usuario;
 using UsersAPI.Domain.Interfaces.Generic;
 
-namespace UsersAPI.Domain.Interfaces.Services
+namespace UsersAPI.Domain.Interfaces.Services;
+
+public interface IUsuarioService : IGenericServices<Usuario>
 {
-    public interface IUsuarioService : IGenericServices<Usuario>
-    {
-        Task<Usuario> CadastrarUsuario(CadastrarUsuarioRequest request);
+    Task<Usuario> CadastrarUsuario(CadastrarUsuarioRequest request);
 
-        Task<Usuario> ValidarLogin(string usuario, string senha);
+    Task<Usuario> ValidarLogin(string usuario, string senha);
 
-        Task<bool> AlterarSenha(AlterarSenhaRequest request);
+    Task<bool> AlterarSenha(AlterarSenhaRequest request);
 
-        Task<AlterarStatusResponse> AlterarStatus(Guid Id);
-    }
+    Task<AlterarStatusResponse> AlterarStatus(Guid Id);
 }

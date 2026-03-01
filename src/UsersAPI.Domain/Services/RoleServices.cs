@@ -4,40 +4,39 @@ using UsersAPI.Domain.Interfaces.Generic;
 using UsersAPI.Domain.Interfaces.Services;
 using UsersAPI.Domain.Services.Generic;
 
-namespace UsersAPI.Domain.Services
+namespace UsersAPI.Domain.Services;
+
+public class RoleServices : GenericServices<Role>, IRoleServices
 {
-    public class RoleServices : GenericServices<Role>, IRoleServices
+    private readonly ILogger<RoleServices> _logger;
+
+    public RoleServices(
+        IGenericEntityRepository<Role> repository,
+        ILogger<RoleServices> logger) : base(repository)
     {
-        private readonly ILogger<RoleServices> _logger;
+        _logger = logger;
+    }
 
-        public RoleServices(
-            IGenericEntityRepository<Role> repository,
-            ILogger<RoleServices> logger) : base(repository)
-        {
-            _logger = logger;
-        }
+    public List<Role> ListarRoles()
+    {
+        return _repository.Get().ToList();
+    }
 
-        public List<Role> ListarRoles()
+    public async Task<(Role? Role, bool Success)> AtualizarRole(Role role)
+    {
+        var roleExistente = _repository.GetByIdInt(role.Id);
+        if (roleExistente == null)
         {
-            return _repository.Get().ToList();
+            _logger.LogWarning("Role não encontrada para atualização | RoleId: {RoleId}", role.Id);
+            return (null, false);
         }
-
-        public async Task<(Role? Role, bool Success)> AtualizarRole(Role role)
+        roleExistente.RoleName = role.RoleName;
+        roleExistente.Description = role.Description;
+        var resultado = _repository.Update(roleExistente);
+        if (!resultado.success)
         {
-            var roleExistente = _repository.GetByIdInt(role.Id);
-            if (roleExistente == null)
-            {
-                _logger.LogWarning("Role não encontrada para atualização | RoleId: {RoleId}", role.Id);
-                return (null, false);
-            }
-            roleExistente.RoleName = role.RoleName;
-            roleExistente.Description = role.Description;
-            var resultado = _repository.Update(roleExistente);
-            if (!resultado.success)
-            {
-                _logger.LogError("Falha ao atualizar role no repositório | RoleId: {RoleId}", role.Id);
-            }
-            return await Task.FromResult((resultado.entity, resultado.success));
+            _logger.LogError("Falha ao atualizar role no repositório | RoleId: {RoleId}", role.Id);
         }
+        return await Task.FromResult((resultado.entity, resultado.success));
     }
 }
