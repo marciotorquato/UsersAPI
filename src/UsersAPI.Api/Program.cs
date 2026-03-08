@@ -43,6 +43,21 @@ catch (Exception ex)
     throw;
 }
 
+//rodar migrations Auto.
+try
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<UsersApiDbContext>();
+    db.Database.Migrate();
+
+    Log.Information("Migrations aplicadas com sucesso.");
+}
+catch(Exception ex)
+{
+    Log.Error(ex, "Erro ao aplicar migrations");
+    throw;
+}
+
 app.UseMiddleware<LoggingMiddleware>();
 app.UseSerilogRequestLoggingConfiguration();
 app.UseHttpsRedirection();
