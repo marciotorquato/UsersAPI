@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-api-service
+spec:
+  selector:
+    app: users-api
+  ports:
+    - protocol: TCP
+      port: 80 #porta do service
+      targetPort: 8080 #porta para o conteiner enchergar
+  type: NodePort # acessível de fora do cluster via navegador
