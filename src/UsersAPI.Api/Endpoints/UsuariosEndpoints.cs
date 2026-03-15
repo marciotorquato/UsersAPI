@@ -25,7 +25,7 @@ public static class UsuariosEndpoints
             }
 
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .WithName("BuscarUsuarioPorId")
         .Produces<BuscarPorIdResponse>(200)
         .Produces(404);
@@ -56,7 +56,7 @@ public static class UsuariosEndpoints
             }
             return ApiResponses.OkMessage("Senha alterada com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .AddEndpointFilter<ValidationEndpointFilter<AlterarSenhaRequest>>()
         .WithName("AlterarSenha")
         .Produces(200)
@@ -73,7 +73,7 @@ public static class UsuariosEndpoints
             }
             return ApiResponses.Ok(result, "Status do usuário alterado com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .WithName("AlterarStatus")
         .Produces<AlterarStatusResponse>(200)
         .Produces(404);

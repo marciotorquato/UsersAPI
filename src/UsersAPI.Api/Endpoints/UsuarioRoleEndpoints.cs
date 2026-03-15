@@ -22,7 +22,7 @@ public static class UsuarioRoleEndpoints
             }
             return ApiResponses.Ok(result, "Roles listadas com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .AddEndpointFilter<ValidationEndpointFilter<ListarRolePorUsuarioRequest>>()
         .WithName("ListarRolesPorUsuario")
         .Produces<List<ListarRolesPorUsuarioResponse>>(200)
@@ -39,7 +39,7 @@ public static class UsuarioRoleEndpoints
             }
             return ApiResponses.OkMessage("Role do usuário alterada com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .AddEndpointFilter<ValidationEndpointFilter<AlterarUsuarioRoleRequest>>()
         .WithName("AlterarRoleUsuario")
         .Produces(200)

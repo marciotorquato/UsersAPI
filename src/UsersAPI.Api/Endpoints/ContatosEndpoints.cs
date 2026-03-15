@@ -16,7 +16,7 @@ public static class ContatoEndpoints
             var contatos = await contatoService.ListarPorUsuario(usuarioId);
             return ApiResponses.Ok(contatos, "Contatos listados com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .WithName("ListarContatosDoUsuario")
         .Produces<List<ContatoResponse>>(200);
 
@@ -27,7 +27,7 @@ public static class ContatoEndpoints
             var contato = await contatoService.Cadastrar(request);
             return ApiResponses.Created($"/api/usuarios/{usuarioId}/contatos/{contato.Id}", contato, "Contato cadastrado com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .AddEndpointFilter<ValidationEndpointFilter<CadastrarContatoRequest>>()
         .WithName("CadastrarContato")
         .Produces<ContatoResponse>(201)
@@ -50,7 +50,7 @@ public static class ContatoEndpoints
 
             return ApiResponses.Ok(contato, "Contato atualizado com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .AddEndpointFilter<ValidationEndpointFilter<AtualizarContatoRequest>>()
         .WithName("AtualizarContato")
         .Produces<ContatoResponse>(200)
@@ -69,7 +69,7 @@ public static class ContatoEndpoints
 
             return ApiResponses.OkMessage("Contato removido com sucesso.");
         })
-        .RequireAuthorization(policy => policy.RequireRole("usuario"))
+        //.RequireAuthorization(policy => policy.RequireRole("usuario"))
         .WithName("DeletarContato")
         .Produces(200)
         .Produces(404);
