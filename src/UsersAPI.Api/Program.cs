@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 using Serilog;
 using UsersAPI.Api.Endpoints;
 using UsersAPI.Api.Middleware;
@@ -62,10 +63,12 @@ catch(Exception ex)
 app.UseMiddleware<LoggingMiddleware>();
 app.UseSerilogRequestLoggingConfiguration();
 app.UseHttpsRedirection();
+app.UseHttpMetrics();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.MapMetrics();
 app.MapControllers();
 app.MapAuthentication();
 app.MapContatos();
