@@ -137,3 +137,6 @@ $RECYCLE.BIN/
 *.vspx
 *.sqllite
 *.db
+
+# Claude Code
+.claude/settings.local.json
