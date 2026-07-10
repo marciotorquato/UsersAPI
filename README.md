@@ -169,10 +169,12 @@ Swagger disponível em: `http://localhost:5001/swagger`
 ```
 UsersAPI/
 └── k8s/
-    ├── configmap.yaml   ← variáveis não sensíveis
-    ├── secret.yaml      ← variáveis sensíveis (Base64)
-    ├── deployment.yaml  ← gerencia os Pods
-    └── service.yaml     ← expõe o serviço na rede
+    ├── configmap.yaml        ← variáveis não sensíveis (inclui ConnectionStrings__Redis)
+    ├── secret.yaml           ← variáveis sensíveis (Base64)
+    ├── deployment.yaml       ← gerencia os Pods
+    ├── service.yaml          ← expõe o serviço na rede
+    ├── redis-deployment.yaml ← cache distribuído (Redis) usado pelo UsersAPI
+    └── redis-service.yaml    ← Service interno (ClusterIP) do Redis
 ```
 
 ### 1. Aplicar os manifestos
