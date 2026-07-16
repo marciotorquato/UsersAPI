@@ -14,8 +14,9 @@ spec:
     spec:
       containers:
         - name: users-api
-          image: orchestrationapi-users-api:latest #img local
-          imagePullPolicy: Never
+          # Substituído automaticamente pela pipeline (kubectl set image) a cada deploy.
+          image: fcgacr.azurecr.io/fcg-users-api:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:  ## variáveis de ambiente
