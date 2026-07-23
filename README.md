@@ -368,3 +368,6 @@ Este repositório evoluiu ao longo das fases do curso:
 - **Fase 2:** estrutura inicial da API, autenticação JWT e persistência relacional (SQL Server)
 - **Fase 3:** containerização, Kubernetes local e mensageria (RabbitMQ)
 - **Fase 4:** cache distribuído (Redis), deploy gerenciado em Azure AKS e automação de CI/CD com GitHub Actions
+
+
+
